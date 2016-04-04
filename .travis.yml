@@ -26,6 +26,7 @@ notifications:
     - szandris69@gmail.com
     onsuccess: always
     onfailure: always
+script: ./gradlew :app:build
 env:
   global:
     - MALLOC_ARENA_MAX=2
