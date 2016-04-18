@@ -1,4 +1,4 @@
-package com.test.myapplication;
+package com.test.myapplication.View;
 
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -8,8 +8,16 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.TextView;
 
-public class MainActivity extends AppCompatActivity {
+import com.test.myapplication.Model.News;
+import com.test.myapplication.Presenter.MainPresenter;
+import com.test.myapplication.R;
+
+public class MainActivity extends AppCompatActivity implements MainView {
+
+    MainPresenter mainPresenter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +34,16 @@ public class MainActivity extends AppCompatActivity {
                         .setAction("Action", null).show();
             }
         });
+
+        mainPresenter = new MainPresenter();
+
+        /*findViewById(R.id.btnBtn).setOnClickListener(new Button.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mainPresenter.doStuff();
+            }
+        });*/
     }
 
     @Override
@@ -48,5 +66,21 @@ public class MainActivity extends AppCompatActivity {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onStart() {
+        super.onStart();
+        mainPresenter.attachView(this);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        mainPresenter.detachView();
+    }
+
+    @Override
+    public void updateView(News item) {
+        ((TextView)findViewById(R.id.textHello)).setText(item.toString());
     }
 }
